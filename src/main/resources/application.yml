@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+spring.datasource.mysql:
+  driverClassName: com.mysql.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/lostbet?autoReconnect=true&useSSL=false
+  username: root
+  password: Caroluan@10
