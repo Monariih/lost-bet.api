@@ -1,13 +1,15 @@
 package com.lostbet.entity;
 
-public class User {
+public class UserCreate {
+
     private Long cpf;
     private String name;
     private String email;
     private String password;
-    private double balance;
-    public Long getCpf(Long cpf) {
-        return this.cpf;
+    private Double balance;
+
+    public Long getCpf() {
+        return cpf;
     }
 
     public void setCpf(Long cpf) {
@@ -38,12 +40,11 @@ public class User {
         this.password = password;
     }
 
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
-
 }

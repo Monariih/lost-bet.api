@@ -19,6 +19,59 @@ public class UserDAO {
     @Autowired
     private DataBaseConfiguration dataBaseConfiguration;
 
+    public User getUser(Long cpf) throws SQLException {
+
+        PreparedStatement prepStat = null;
+        ResultSet rs = null;
+        Connection conn = null;
+
+        try {
+            conn = DataBaseConnection.getDataSource(dataBaseConfiguration).getConnection();
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT userCpf, userName, userEmail, userPassword, userBalance FROM userdata WHERE userCpf = (?)");
+
+            prepStat = conn.prepareStatement(sql.toString());
+
+            prepStat.setLong(1, cpf);
+
+            rs = prepStat.executeQuery();
+
+            User user = new User();
+
+            rs.next();
+            user.setCpf(rs.getLong("userCpf"));
+            user.setName(rs.getString("userName"));
+            user.setEmail(rs.getString("userEmail"));
+            user.setPassword(rs.getString("userPassword"));
+            user.setBalance(rs.getDouble("userBalance"));
+
+            return user;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                }
+            }
+            if (prepStat != null) {
+                try {
+                    prepStat.close();
+                } catch (Exception e) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+    }
+
     public List<User> getAllUsers() throws SQLException {
 
         PreparedStatement prepStat = null;
