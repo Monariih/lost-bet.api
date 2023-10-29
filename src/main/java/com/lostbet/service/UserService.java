@@ -18,6 +18,9 @@ public class UserService {
     @Autowired
     private UserCreateDAO userCreateDAO;
 
+    public User updateUser(long cpf, User user) throws SQLException{
+        return userDAO.updateUser(cpf, user);
+    }
     public User getUser(long cpf) throws SQLException {
         return userDAO.getUser(cpf);
     }
