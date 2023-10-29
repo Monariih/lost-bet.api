@@ -5,6 +5,7 @@ import com.lostbet.entity.User;
 import com.lostbet.util.DataBaseConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +20,52 @@ public class UserDAO {
     @Autowired
     private DataBaseConfiguration dataBaseConfiguration;
 
+    public User updateUser(Long cpf, User user) throws SQLException {
+
+        PreparedStatement prepStat = null;
+        ResultSet rs = null;
+        Connection conn = null;
+
+        try {
+            conn = DataBaseConnection.getDataSource(dataBaseConfiguration).getConnection();
+
+            StringBuilder sql = new StringBuilder();
+            sql.append(
+                "UPDATE userdata SET userbalance = ? WHERE userCpf = ?"
+            );
+
+            prepStat = conn.prepareStatement(sql.toString());
+
+            prepStat.setDouble(1, user.getBalance());
+            prepStat.setLong(2, cpf);
+
+            prepStat.execute();
+
+            return user;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                }
+            }
+            if (prepStat != null) {
+                try {
+                    prepStat.close();
+                } catch (Exception e) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+    }
     public User getUser(Long cpf) throws SQLException {
 
         PreparedStatement prepStat = null;
