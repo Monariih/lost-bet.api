@@ -24,4 +24,8 @@ public class UserController {
         return userService.getUser(cpf);
     }
 
+    @PatchMapping(value = "/v1/user/{cpf}")
+    public User updateBalance(@PathVariable long cpf,@RequestBody User user) throws SQLException {
+        return userService.updateUser(cpf, user);
+    }
 }
