@@ -1,0 +1,3 @@
+user lostbet.userdata
+
+select * from lostbet.userdata
