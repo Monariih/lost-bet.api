@@ -1,41 +1,41 @@
 package com.lostbet.service;
 
-import com.lostbet.dao.UserCreateDAO;
-import com.lostbet.dao.UserDAO;
-import com.lostbet.entity.User;
-import com.lostbet.entity.UserCreate;
+import com.lostbet.model.User;
+import com.lostbet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserDAO userDAO;
-    @Autowired
-    private UserCreateDAO userCreateDAO;
-
-    public User updateUser(long cpf, User user) throws SQLException{
-        return userDAO.updateUser(cpf, user);
-    }
-    public User getUser(long cpf) throws SQLException {
-        return userDAO.getUser(cpf);
-    }
-    public List<User> getAllUsers() throws SQLException {
-        return userDAO.getAllUsers();
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public UserCreate saveUser(UserCreate userCreate) throws Exception{
-        Long cpf = userCreateDAO.createUser(userCreate);
-        if (cpf != null) {
-            userCreate.setCpf(cpf);
-            return userCreate;
-        } else {
-            return null;
-        }
+    public List<User> listUsers() {
+        return userRepository.findAll();
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    public User getUser(long usercpf) {
+        Optional<User> user = userRepository.findByUsercpf(usercpf);
+        return user.orElseGet(User::new);
+    }
+
+    public User deposit(User user) {
+        return userRepository.save(user);
+    }
+
+    public User delete(long usercpf) {
+        return null;
     }
 
 }
